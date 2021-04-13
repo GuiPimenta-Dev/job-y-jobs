@@ -1,0 +1,13 @@
+1618281187893	geckodriver	INFO	Listening on 127.0.0.1:61057
+1618281190946	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--start-maximized" "--ignore-certificate-errors" "--disable-dev-shm-usage" "--no-sandbox" "-foreground" "-no-remote" "-profile" "C:\\Users\\guial\\AppData\\Local\\Temp\\rust_mozprofileBaAboI"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1618281193884	Marionette	INFO	Listening on port 61069
+1618281194143	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+ner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--start-maximized" "--ignore-certificate-errors" "--disable-dev-shm-usage" "--no-sandbox" "-foreground" "-no-remote" "-profile" "C:\\Users\\guial\\AppData\\Local\\Temp\\rust_mozprofileP2TWYV"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1618281257208	Marionette	INFO	Listening on port 61203
+1618281257325	Marionette	WARN	TLS certificate errors will be ignored for this session
+1618281270000	Marionette	INFO	Stopped listening on port 61203
