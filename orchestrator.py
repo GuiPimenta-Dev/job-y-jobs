@@ -9,7 +9,7 @@ process = CrawlerProcess(get_project_settings())
 scheduler = TwistedScheduler()
 # scheduler.add_job(process.crawl, 'cron', args=[ExtractorVagasSpider], day="*",hour="16",minute="18")
 # scheduler.add_job(process.crawl, 'cron', args=[ExtractorVagasSpider], day="*",hour="17",minute="14")
-scheduler.add_job(process.crawl, 'interval', args=[ExtractorVagasSpider], minutes=3)
+scheduler.add_job(process.crawl, 'interval', args=[ExtractorVagasSpider], minutes=20)
 
 
 scheduler.start()

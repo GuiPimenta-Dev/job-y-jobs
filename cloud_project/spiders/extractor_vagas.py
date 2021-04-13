@@ -7,8 +7,8 @@ class ExtractorVagasSpider(scrapy.Spider):
     name = 'spider_jobs_vagas'
     start_urls = []
     item = JobsVagasItem()
-    # job = ["Python", "Java", "C#", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
-    job = ["Java"]
+    job = ["Python", "Java", "C#", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
+
     def __init__(self, *args, **kwargs):
 
         # jobs_param = kwargs.pop('job', [])
