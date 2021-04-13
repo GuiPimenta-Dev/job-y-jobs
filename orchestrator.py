@@ -13,7 +13,7 @@ scheduler.add_job(process.crawl, 'interval', args=[ExtractorVagasSpider], minute
 
 
 scheduler.start()
-# process.start(False)
+process.start(True)
 
 
 
