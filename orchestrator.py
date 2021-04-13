@@ -2,7 +2,7 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from apscheduler.schedulers.twisted import TwistedScheduler
-from spiders.extractor_vagas import ExtractorVagasSpider
+from cloud_project.spiders.extractor_vagas import ExtractorVagasSpider
 
 
 process = CrawlerProcess(get_project_settings())
