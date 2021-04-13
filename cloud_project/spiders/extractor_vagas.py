@@ -15,7 +15,7 @@ class ExtractorVagasSpider(scrapy.Spider):
         # job_list = jobs_param.split(',')
 
         for job in self.job:
-            start_urls = [f'https://www.vagas.com.br/vagas-de-{job}?pagina={i}' for i in range(1, 10)]
+            start_urls = [f'https://www.vagas.com.br/vagas-de-{job}?pagina={i}' for i in range(1, 2)]
             for start_url in start_urls:
                 self.start_urls.append(start_url)
         self.logger.info(self.start_urls)
