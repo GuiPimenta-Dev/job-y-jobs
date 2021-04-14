@@ -4,16 +4,13 @@ from scrapy.utils.project import get_project_settings
 from apscheduler.schedulers.twisted import TwistedScheduler
 from cloud_project.spiders.extractor_vagas import ExtractorVagasSpider
 
-
 process = CrawlerProcess(get_project_settings())
 scheduler = TwistedScheduler()
 
 scheduler.add_job(process.crawl, 'interval', args=[ExtractorVagasSpider], hour=6)
 
-
 scheduler.start()
 process.start(False)
-
 
 
 
@@ -52,12 +49,6 @@ process.start(False)
 #     time.sleep(1)
 
 
-
-
-
-
-
-
 # def job():
 #     print(f'Estou rodando na thread {threading.current_thread()}')
 #
@@ -71,9 +62,3 @@ process.start(False)
 # schedule.every(10).seconds.do(run_threaded,job)
 # schedule.every(10).seconds.do(run_threaded,job)
 # schedule.every().day.at("10:24").do(run_threaded,job)
-
-
-
-
-
-
