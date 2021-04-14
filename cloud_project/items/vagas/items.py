@@ -17,4 +17,4 @@ class JobsVagasItem(scrapy.Item):
     local = scrapy.Field()
     date = scrapy.Field()
     available = scrapy.Field()
-
+    timestamp = scrapy.Field()

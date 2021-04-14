@@ -1,13 +1,16 @@
+import datetime
+
 import scrapy
-from scrapy.crawler import CrawlerProcess
 
 from cloud_project.items.vagas.items import JobsVagasItem
+
 
 class ExtractorVagasSpider(scrapy.Spider):
     name = 'spider_jobs_vagas'
     start_urls = []
     item = JobsVagasItem()
     job = ["Python", "Java", "C#", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
+
     # job = ["Python"]
 
     def __init__(self, *args, **kwargs):
@@ -38,7 +41,8 @@ class ExtractorVagasSpider(scrapy.Spider):
             except:
                 self.item['employer'] = ''
             try:
-                description_list = i.xpath('.//div[@class="detalhes"]//p/text() | .//div[@class="detalhes"]//p//mark/text()').extract()
+                description_list = i.xpath(
+                    './/div[@class="detalhes"]//p/text() | .//div[@class="detalhes"]//p//mark/text()').extract()
                 self.item['description'] = ' '.join(description_list)
             except:
                 self.item['description'] = ''
@@ -51,5 +55,7 @@ class ExtractorVagasSpider(scrapy.Spider):
             except:
                 self.item['date'] = ''
 
-            yield self.item
+            now = datetime.now()
+            self.item['timestamp'] = now.strftime("%H:%M:%S %d/%m/%Y ")
 
+            yield self.item
