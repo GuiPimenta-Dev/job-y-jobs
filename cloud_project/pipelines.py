@@ -14,7 +14,10 @@ class CloudProjectPipeline:
     def __init__(self):
         self.conn = pymongo.MongoClient(
             "mongodb+srv://GuilhermePimenta:guilherme27@backend.lwkqa.mongodb.net/BackEnd?retryWrites=true&w=majority")
-        db = self.conn.jobs
+
+        # TODO trocar novamente para jobs_Tb depois
+
+        db = self.conn.test
 
         self.collection = db['jobs_tb']
 
