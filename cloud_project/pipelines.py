@@ -17,7 +17,7 @@ class CloudProjectPipeline:
 
         # TODO trocar novamente para jobs_Tb depois
 
-        db = self.conn.test
+        db = self.conn.jobs
 
         self.collection = db['jobs_tb']
 
