@@ -1,8 +1,8 @@
-import datetime
-
 import scrapy
 
 from cloud_project.items.vagas.items import JobsVagasItem
+
+import datetime
 
 
 class ExtractorVagasSpider(scrapy.Spider):
@@ -55,7 +55,6 @@ class ExtractorVagasSpider(scrapy.Spider):
             except:
                 self.item['date'] = ''
 
-            now = datetime.now()
-            self.item['timestamp'] = now.strftime("%H:%M:%S %d/%m/%Y ")
+            # self.item['timestamp'] = datetime.now().strftime("%H:%M:%S %d/%m/%Y ")
 
             yield self.item

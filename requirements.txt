@@ -2,6 +2,6 @@ scrapy
 pymongo
 dnspython
 scrapy-user-agents
+datetime
 scrapy-selenium
 apscheduler
-datetime
