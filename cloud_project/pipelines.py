@@ -22,6 +22,6 @@ class CloudProjectPipeline:
         self.collection = db['jobs_tb']
 
     def process_item(self, item, spider):
-        # if not self.collection.find_one({"link": item['link']}):
-        self.collection.insert(dict(item))
+        if not self.collection.find_one({"link": item['link']}):
+            self.collection.insert(dict(item))
         return item
