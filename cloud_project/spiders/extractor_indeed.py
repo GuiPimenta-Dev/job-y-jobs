@@ -30,6 +30,7 @@ class ExtractorVagasSpider(scrapy.Spider):
     def parse(self, response, **kwargs):
         job = response.xpath('//h2//a/@title').extract()
         link = response.xpath('//h2//a/@id').extract()
+        link_href = response.xpath('//h2//a/@href').extract()
         employer = list(filter(None, list(map(str.strip, response.xpath(
             '//span[@class="company"]/text() | //span[@class="company"]//a/text()').extract()))))
 
@@ -45,7 +46,10 @@ class ExtractorVagasSpider(scrapy.Spider):
             except:
                 self.item['job'] = ''
             try:
-                self.item['link'] = response.url + "&vjk=" + link[3].split('_')[1]
+                try:
+                    self.item['link'] = response.url + "&vjk=" + link[i].split('_')[1]
+                except:
+                    self.item['link'] = 'https://br.indeed.com' + link_href[i]
             except:
                 self.item['link'] = ''
             try:
