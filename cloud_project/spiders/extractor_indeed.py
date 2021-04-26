@@ -1,9 +1,6 @@
 import scrapy
 
-from cloud_project.items.vagas.items import JobsVagasItem
-
-import datetime
-from scrapy.http import HtmlResponse
+from cloud_project.items.items import JobsVagasItem
 
 
 class ExtractorIndeedSpider(scrapy.Spider):
@@ -25,7 +22,7 @@ class ExtractorIndeedSpider(scrapy.Spider):
             for start_url in start_urls:
                 self.start_urls.append(start_url)
         self.logger.info(self.start_urls)
-        super(ExtractorVagasSpider, self).__init__(*args, **kwargs)
+        super(ExtractorIndeedSpider, self).__init__(*args, **kwargs)
 
     def parse(self, response, **kwargs):
         job = response.xpath('//h2//a/@title').extract()
@@ -41,6 +38,9 @@ class ExtractorIndeedSpider(scrapy.Spider):
         date = response.xpath('//div[@class="result-link-bar"]/span/text()').extract()
 
         for i in range(len(job)):
+
+            self.item['site'] = "Indeed"
+
             try:
                 self.item['job'] = job[i]
             except:

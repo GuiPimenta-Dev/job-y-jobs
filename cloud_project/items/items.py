@@ -9,7 +9,9 @@ import scrapy
 class LoginVagasItem(scrapy.Item):
     status = scrapy.Field()
 
+
 class JobsVagasItem(scrapy.Item):
+    site = scrapy.Field()
     job = scrapy.Field()
     link = scrapy.Field()
     employer = scrapy.Field()

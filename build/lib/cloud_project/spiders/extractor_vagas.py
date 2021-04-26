@@ -1,7 +1,6 @@
 import scrapy
-from scrapy.crawler import CrawlerProcess
 
-from cloud_project.items.vagas.items import JobsVagasItem
+from cloud_project.items.items import JobsVagasItem
 
 class ActuatorVagasSpider(scrapy.Spider):
     job: str

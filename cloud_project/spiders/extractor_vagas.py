@@ -1,8 +1,6 @@
 import scrapy
 
-from cloud_project.items.vagas.items import JobsVagasItem
-
-import datetime
+from cloud_project.items.items import JobsVagasItem
 
 
 class ExtractorVagasSpider(scrapy.Spider):
@@ -27,6 +25,8 @@ class ExtractorVagasSpider(scrapy.Spider):
 
     def parse(self, response, **kwargs):
         for i in response.xpath('//li[contains(@class, "vaga odd ") or contains(@class, "vaga even ")]'):
+
+            self.item['site'] = "Vagas.com"
 
             try:
                 self.item['job'] = i.xpath('.//h2[@class="cargo"]/a/@title').get()
