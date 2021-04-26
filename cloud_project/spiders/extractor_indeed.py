@@ -6,7 +6,7 @@ import datetime
 from scrapy.http import HtmlResponse
 
 
-class ExtractorVagasSpider(scrapy.Spider):
+class ExtractorIndeedSpider(scrapy.Spider):
     name = 'spider_jobs_indeed'
     start_urls = []
     item = JobsVagasItem()
