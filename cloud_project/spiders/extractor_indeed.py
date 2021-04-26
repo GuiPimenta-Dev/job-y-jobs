@@ -20,7 +20,7 @@ class ExtractorVagasSpider(scrapy.Spider):
         # job_list = jobs_param.split(',')
 
         for job in self.job:
-            start_urls = [f'https://br.indeed.com/empregos?q={job}&start={i}' for i in range(0, 100,10)]
+            start_urls = [f'https://br.indeed.com/empregos?q={job}&start={i}' for i in range(0, 100, 10)]
             # start_urls = [f'https://br.indeed.com/jobs?q=Python&start=20']
             for start_url in start_urls:
                 self.start_urls.append(start_url)
@@ -32,6 +32,10 @@ class ExtractorVagasSpider(scrapy.Spider):
         link = response.xpath('//h2//a/@id').extract()
         employer = list(filter(None, list(map(str.strip, response.xpath(
             '//span[@class="company"]/text() | //span[@class="company"]//a/text()').extract()))))
+
+        description = list(filter(None, list(map(str.strip, response.xpath(
+            '//div[@class="summary"]//ul | //div[@class="summary"]/text()').extract()))))
+
         local = response.xpath('//div[@class="recJobLoc"]/@data-rc-loc').extract()
         date = response.xpath('//div[@class="result-link-bar"]/span/text()').extract()
 
@@ -49,13 +53,10 @@ class ExtractorVagasSpider(scrapy.Spider):
             except:
                 self.item['employer'] = ''
 
-            #TODO FAZER DESCRIPTION
-            # try:
-            #     description_list = i.xpath(
-            #         './/div[@class="detalhes"]//p/text() | .//div[@class="detalhes"]//p//mark/text()').extract()
-            #     self.item['description'] = ' '.join(description_list)
-            # except:
-            #     self.item['description'] = ''
+            try:
+                self.item['description'] = description[i]
+            except:
+                self.item['description'] = ''
 
             try:
                 self.item['local'] = local[i]
@@ -66,8 +67,4 @@ class ExtractorVagasSpider(scrapy.Spider):
             except:
                 self.item['date'] = ''
 
-            # self.item['timestamp'] = datetime.now().strftime("%H:%M:%S %d/%m/%Y ")
-
             yield self.item
-
-
