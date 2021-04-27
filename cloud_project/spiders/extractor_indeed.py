@@ -18,7 +18,6 @@ class ExtractorIndeedSpider(scrapy.Spider):
 
         for job in self.job:
             start_urls = [f'https://br.indeed.com/empregos?q={job}&start={i}' for i in range(0, 100, 10)]
-            # start_urls = [f'https://br.indeed.com/jobs?q=Python&start=20']
             for start_url in start_urls:
                 self.start_urls.append(start_url)
         self.logger.info(self.start_urls)
@@ -34,7 +33,8 @@ class ExtractorIndeedSpider(scrapy.Spider):
             employer = response.xpath(f'//div[@id="{i}"]//span[@class="company"]/text()').get()
             employer_a = response.xpath(f'//div[@id="{i}"]//span[@class="company"]//a/text()').get()
             description = response.xpath(f'//div[@id="{i}"]//div[@class="summary"]/text()').get()
-            description_ul = response.xpath(f'//div[@id="{i}"]//div[@class="summary"]//ul').get()
+            description_ul= response.xpath(
+                f'//div[@id="{i}"]//div[@class="summary"]//li/text() | //div[@id="{i}"]//div[@class="summary"]//li//b/text() ').extract()
             local = response.xpath(f'//div[@id="{i}"]//div[@class="recJobLoc"]/@data-rc-loc').get()
             date = response.xpath(f'//div[@id="{i}"]//div[@class="result-link-bar"]/span/text()').get()
 
@@ -46,9 +46,6 @@ class ExtractorIndeedSpider(scrapy.Spider):
 
             if description is not None:
                 description = description.strip()
-
-            if description_ul is not None:
-                description_ul = description_ul.strip()
 
             self.item['site'] = "Indeed"
 
@@ -79,7 +76,8 @@ class ExtractorIndeedSpider(scrapy.Spider):
                     if description:
                         self.item['description'] = description
                     else:
-                        self.item['description'] = description_ul
+                        self.item['description'] = '\n'.join(description_ul)
+
                 else:
                     self.item['description'] = 'Não informado'
             except:
@@ -96,4 +94,4 @@ class ExtractorIndeedSpider(scrapy.Spider):
                 self.item['date'] = ''
 
             yield self.item
-            pass
+

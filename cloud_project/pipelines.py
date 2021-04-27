@@ -7,13 +7,15 @@
 # useful for handling different item types with a single interface
 
 import pymongo
+from env import USER,PASS,DB,RETRY
+
 
 
 class CloudProjectPipeline:
 
     def __init__(self):
         self.conn = pymongo.MongoClient(
-            "mongodb+srv://GuilhermePimenta:guilherme27@backend.lwkqa.mongodb.net/BackEnd?retryWrites=true&w=majority")
+            f"mongodb+srv://{USER}:{PASS}@backend.lwkqa.mongodb.net/{DB}?retryWrites={RETRY}&w=majority")
 
         # TODO trocar novamente para jobs_Tb depois
 
