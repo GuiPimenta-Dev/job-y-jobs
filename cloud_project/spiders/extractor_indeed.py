@@ -25,50 +25,75 @@ class ExtractorIndeedSpider(scrapy.Spider):
         super(ExtractorIndeedSpider, self).__init__(*args, **kwargs)
 
     def parse(self, response, **kwargs):
-        job = response.xpath('//h2//a/@title').extract()
-        link = response.xpath('//h2//a/@id').extract()
-        link_href = response.xpath('//h2//a/@href').extract()
-        employer = list(filter(None, list(map(str.strip, response.xpath(
-            '//span[@class="company"]/text() | //span[@class="company"]//a/text()').extract()))))
+        ids = response.xpath(
+            '//table[@id="resultsBody"]//div[@class="jobsearch-SerpJobCard unifiedRow row result"]/@id').extract()
+        for i in ids:
+            job = response.xpath(f'//div[@id="{i}"]//h2//a/@title').get()
+            link = response.xpath(f'//div[@id="{i}"]//h2//a/@id').get()
+            link_href = response.xpath(f'//div[@id="{i}"]//h2//a/@href').get()
+            employer = response.xpath(f'//div[@id="{i}"]//span[@class="company"]/text()').get()
+            employer_a = response.xpath(f'//div[@id="{i}"]//span[@class="company"]//a/text()').get()
+            description = response.xpath(f'//div[@id="{i}"]//div[@class="summary"]/text()').get()
+            description_ul = response.xpath(f'//div[@id="{i}"]//div[@class="summary"]//ul').get()
+            local = response.xpath(f'//div[@id="{i}"]//div[@class="recJobLoc"]/@data-rc-loc').get()
+            date = response.xpath(f'//div[@id="{i}"]//div[@class="result-link-bar"]/span/text()').get()
 
-        description = list(filter(None, list(map(str.strip, response.xpath(
-            '//div[@class="summary"]//ul | //div[@class="summary"]/text()').extract()))))
+            if employer is not None:
+                employer = employer.strip()
 
-        local = response.xpath('//div[@class="recJobLoc"]/@data-rc-loc').extract()
-        date = response.xpath('//div[@class="result-link-bar"]/span/text()').extract()
+            if employer_a is not None:
+                employer_a = employer_a.strip()
 
-        for i in range(len(job)):
+            if description is not None:
+                description = description.strip()
+
+            if description_ul is not None:
+                description_ul = description_ul.strip()
 
             self.item['site'] = "Indeed"
 
             try:
-                self.item['job'] = job[i]
+                self.item['job'] = job
             except:
                 self.item['job'] = ''
             try:
-                try:
-                    self.item['link'] = response.url + "&vjk=" + link[i].split('_')[1]
-                except:
-                    self.item['link'] = 'https://br.indeed.com' + link_href[i]
+                if "sja" not in link:
+                    self.item['link'] = response.url + "&vjk=" + link.split('_')[1]
+                else:
+                    self.item['link'] = 'https://br.indeed.com' + link_href
             except:
                 self.item['link'] = ''
             try:
-                self.item['employer'] = employer[i]
+                if employer is not None or employer_a is not None:
+                    if employer:
+                        self.item['employer'] = employer
+                    else:
+                        self.item['employer'] = employer_a
+                else:
+                    self.item['employer'] = 'Não informado'
             except:
                 self.item['employer'] = ''
 
             try:
-                self.item['description'] = description[i]
+                if description is not None or description_ul is not None:
+                    if description:
+                        self.item['description'] = description
+                    else:
+                        self.item['description'] = description_ul
+                else:
+                    self.item['description'] = 'Não informado'
             except:
                 self.item['description'] = ''
 
             try:
-                self.item['local'] = local[i]
+                self.item['local'] = local
             except:
                 self.item['local'] = ''
+
             try:
-                self.item['date'] = date[i]
+                self.item['date'] = date
             except:
                 self.item['date'] = ''
 
             yield self.item
+            pass
