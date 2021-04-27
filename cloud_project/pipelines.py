@@ -7,7 +7,7 @@
 # useful for handling different item types with a single interface
 
 import pymongo
-from env import USER,PASS,DB,RETRY
+from env import USER,PASS,DB,RETRY,COLLECTION
 
 
 
@@ -21,7 +21,7 @@ class CloudProjectPipeline:
 
         db = self.conn.jobs
 
-        self.collection = db['jobs_tb']
+        self.collection = db[COLLECTION]
 
     def process_item(self, item, spider):
         if not self.collection.find_one({"link": item['link']}):
