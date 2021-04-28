@@ -1,6 +1,7 @@
 import scrapy
 
 from cloud_project.items.items import JobsVagasItem
+from scrapy.selector import Selector
 
 
 class ExtractorIndeedSpider(scrapy.Spider):
@@ -12,9 +13,6 @@ class ExtractorIndeedSpider(scrapy.Spider):
     # job = ["Python"]
 
     def __init__(self, *args, **kwargs):
-
-        # jobs_param = kwargs.pop('job', [])
-        # job_list = jobs_param.split(',')
 
         for job in self.job:
             start_urls = [f'https://br.indeed.com/empregos?q={job}&start={i}' for i in range(0, 100, 10)]
@@ -33,8 +31,12 @@ class ExtractorIndeedSpider(scrapy.Spider):
             employer = response.xpath(f'//div[@id="{i}"]//span[@class="company"]/text()').get()
             employer_a = response.xpath(f'//div[@id="{i}"]//span[@class="company"]//a/text()').get()
             description = response.xpath(f'//div[@id="{i}"]//div[@class="summary"]/text()').get()
-            description_ul= response.xpath(
-                f'//div[@id="{i}"]//div[@class="summary"]//li/text() | //div[@id="{i}"]//div[@class="summary"]//li//b/text() ').extract()
+
+            description_ul_selector = Selector(text=response.xpath(f'//div[@id="{i}"]//div[@class="summary"]//ul').get()
+                                               .replace('<b>', '').replace('</b>', '')).xpath('//li/text()').extract()
+            description_ul = description_ul_selector if response.xpath(f'//div[@id="{i}"]//div[@class="summary"]//ul') \
+                else ''
+
             local = response.xpath(f'//div[@id="{i}"]//div[@class="recJobLoc"]/@data-rc-loc').get()
             date = response.xpath(f'//div[@id="{i}"]//div[@class="result-link-bar"]/span/text()').get()
 
@@ -94,4 +96,3 @@ class ExtractorIndeedSpider(scrapy.Spider):
                 self.item['date'] = ''
 
             yield self.item
-
