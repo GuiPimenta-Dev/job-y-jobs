@@ -26,16 +26,17 @@ class ExtractorIndeedSpider(scrapy.Spider):
             '//table[@id="resultsBody"]//div[@class="jobsearch-SerpJobCard unifiedRow row result"]/@id').extract()
         for i in ids:
             job = response.xpath(f'//div[@id="{i}"]//h2//a/@title').get()
-            link = response.xpath(f'//div[@id="{i}"]//h2//a/@id').get()
+            link_id = response.xpath(f'//div[@id="{i}"]//h2//a/@id').get()
             link_href = response.xpath(f'//div[@id="{i}"]//h2//a/@href').get()
             employer = response.xpath(f'//div[@id="{i}"]//span[@class="company"]/text()').get()
             employer_a = response.xpath(f'//div[@id="{i}"]//span[@class="company"]//a/text()').get()
             description = response.xpath(f'//div[@id="{i}"]//div[@class="summary"]/text()').get()
 
-            description_ul_selector = Selector(text=response.xpath(f'//div[@id="{i}"]//div[@class="summary"]//ul').get()
-                                               .replace('<b>', '').replace('</b>', '')).xpath('//li/text()').extract()
-            description_ul = description_ul_selector if response.xpath(f'//div[@id="{i}"]//div[@class="summary"]//ul') \
-                else ''
+            if response.xpath(f'//div[@id="{i}"]//div[@class="summary"]//ul'):
+                description_ul = Selector(text=response.xpath(f'//div[@id="{i}"]//div[@class="summary"]//ul').get()
+                                          .replace('<b>', '').replace('</b>', '')).xpath('//li/text()').extract()
+            else:
+                description_ul = None
 
             local = response.xpath(f'//div[@id="{i}"]//div[@class="recJobLoc"]/@data-rc-loc').get()
             date = response.xpath(f'//div[@id="{i}"]//div[@class="result-link-bar"]/span/text()').get()
@@ -49,15 +50,15 @@ class ExtractorIndeedSpider(scrapy.Spider):
             if description is not None:
                 description = description.strip()
 
-            self.item['site'] = "Indeed"
+            self.item['site'] = "indeed"
 
             try:
                 self.item['job'] = job
             except:
                 self.item['job'] = ''
             try:
-                if "sja" not in link:
-                    self.item['link'] = response.url + "&vjk=" + link.split('_')[1]
+                if "sja" not in link_id:
+                    self.item['link'] = response.url + "&vjk=" + link_id.split('_')[1]
                 else:
                     self.item['link'] = 'https://br.indeed.com' + link_href
             except:
