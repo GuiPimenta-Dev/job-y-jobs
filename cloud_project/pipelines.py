@@ -13,11 +13,9 @@ import pymongo
 class CloudProjectPipeline:
 
     def __init__(self):
-
-        #VARIAVEIS AMBIENTE DO HEROKU
+        # VARIAVEIS AMBIENTE DO HEROKU
         self.conn = pymongo.MongoClient(
             f"mongodb+srv://{os.environ['USER']}:{os.environ['PASS']}@backend.lwkqa.mongodb.net/{os.environ['DB']}?retryWrites={os.environ['RETRY']}&w=majority")
-
 
         # TODO trocar novamente para jobs_Tb depois
 
