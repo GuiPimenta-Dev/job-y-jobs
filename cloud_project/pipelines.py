@@ -19,10 +19,10 @@ COLLECTION = "jobs_tb"
 class CloudProjectPipeline:
 
     def __init__(self):
-        # self.conn = pymongo.MongoClient(
-        #     f"mongodb+srv://{os.environ['USER']}:{os.environ['PASS']}@backend.lwkqa.mongodb.net/{os.environ['DB']}?retryWrites={os.environ['Retry']}&w=majority")
         self.conn = pymongo.MongoClient(
-            f"mongodb+srv://{USER}:{PASS}@backend.lwkqa.mongodb.net/{DB}?retryWrites={RETRY}&w=majority")
+            f"mongodb+srv://{os.environ['USER']}:{os.environ['PASS']}@backend.lwkqa.mongodb.net/{os.environ['DB']}?retryWrites={os.environ['Retry']}&w=majority")
+        # self.conn = pymongo.MongoClient(
+        #     f"mongodb+srv://{USER}:{PASS}@backend.lwkqa.mongodb.net/{DB}?retryWrites={RETRY}&w=majority")
 
         # TODO trocar novamente para jobs_Tb depois
 
