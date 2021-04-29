@@ -16,7 +16,7 @@ SPIDER_MODULES = ['cloud_project.spiders']
 NEWSPIDER_MODULE = 'cloud_project.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'
+# USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -34,6 +34,7 @@ ROBOTSTXT_OBEY = True
 
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = False
+# COOKIES_DEBUG = True
 
 # Disable Telnet Console (enabled by default)
 # TELNETCONSOLE_ENABLED = False
@@ -59,6 +60,7 @@ ROBOTSTXT_OBEY = True
 #     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
 #     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
 # }
+
 #
 # FAKEUSERAGENT_FALLBACK = "Mozilla"
 
