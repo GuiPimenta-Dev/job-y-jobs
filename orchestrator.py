@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from DateTime.pytz_support import hour
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from apscheduler.schedulers.twisted import TwistedScheduler
@@ -8,7 +9,7 @@ from cloud_project.spiders.extractor_indeed import ExtractorIndeedSpider
 process = CrawlerProcess(get_project_settings())
 scheduler = TwistedScheduler()
 
-scheduler.add_job(process.crawl, 'interval', args=[ExtractorVagasSpider], minutes=1)
+scheduler.add_job(process.crawl, 'interval', args=[ExtractorVagasSpider], hours=1)
 scheduler.add_job(process.crawl, 'interval', args=[ExtractorIndeedSpider], minutes=1)
 
 scheduler.start()
