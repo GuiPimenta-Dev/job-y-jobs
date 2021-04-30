@@ -15,7 +15,7 @@ class ExtractorIndeedSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
 
         for job in self.job:
-            start_urls = [f'https://br.indeed.com/empregos?q={job}&start={i}' for i in range(0, 100, 10)]
+            start_urls = [f'https://br.indeed.com/empregos?q={job}&start={i}' for i in range(0, 30, 10)]
             for start_url in start_urls:
                 self.start_urls.append(start_url)
         self.logger.info(self.start_urls)

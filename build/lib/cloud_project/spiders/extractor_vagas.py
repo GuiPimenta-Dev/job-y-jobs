@@ -2,25 +2,31 @@ import scrapy
 
 from cloud_project.items.items import JobsVagasItem
 
-class ActuatorVagasSpider(scrapy.Spider):
-    job: str
+
+class ExtractorVagasSpider(scrapy.Spider):
     name = 'spider_jobs_vagas'
     start_urls = []
     item = JobsVagasItem()
+    job = ["Python", "Java", "C#", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
+
+    # job = ["Python"]
 
     def __init__(self, *args, **kwargs):
 
-        jobs_param = kwargs.pop('job', [])
-        job_list = jobs_param.split(',')
-        for job in job_list:
+        # jobs_param = kwargs.pop('job', [])
+        # job_list = jobs_param.split(',')
+
+        for job in self.job:
             start_urls = [f'https://www.vagas.com.br/vagas-de-{job}?pagina={i}' for i in range(1, 10)]
             for start_url in start_urls:
                 self.start_urls.append(start_url)
         self.logger.info(self.start_urls)
-        super(ActuatorVagasSpider, self).__init__(*args, **kwargs)
+        super(ExtractorVagasSpider, self).__init__(*args, **kwargs)
 
     def parse(self, response, **kwargs):
         for i in response.xpath('//li[contains(@class, "vaga odd ") or contains(@class, "vaga even ")]'):
+
+            self.item['site'] = "Vagas.com"
 
             try:
                 self.item['job'] = i.xpath('.//h2[@class="cargo"]/a/@title').get()
@@ -35,7 +41,8 @@ class ActuatorVagasSpider(scrapy.Spider):
             except:
                 self.item['employer'] = ''
             try:
-                description_list = i.xpath('.//div[@class="detalhes"]//p/text() | .//div[@class="detalhes"]//p//mark/text()').extract()
+                description_list = i.xpath(
+                    './/div[@class="detalhes"]//p/text() | .//div[@class="detalhes"]//p//mark/text()').extract()
                 self.item['description'] = ' '.join(description_list)
             except:
                 self.item['description'] = ''
@@ -48,5 +55,6 @@ class ActuatorVagasSpider(scrapy.Spider):
             except:
                 self.item['date'] = ''
 
-            yield self.item
+            # self.item['timestamp'] = datetime.now().strftime("%H:%M:%S %d/%m/%Y ")
 
+            yield self.item

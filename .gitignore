@@ -2,3 +2,8 @@ venv/
 .idea/
 __pycache__/
 env.py
+dbs/
+eggs/
+logs/
+project.egg-info/
+setup.py
