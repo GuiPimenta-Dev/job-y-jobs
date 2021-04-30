@@ -9,8 +9,8 @@ from cloud_project.spiders.extractor_indeed import ExtractorIndeedSpider
 process = CrawlerProcess(get_project_settings())
 scheduler = TwistedScheduler()
 
-scheduler.add_job(process.crawl, 'interval', args=[ExtractorVagasSpider], hours=1)
-# scheduler.add_job(process.crawl, 'interval', args=[ExtractorIndeedSpider], minutes=1)
+# scheduler.add_job(process.crawl, 'interval', args=[ExtractorVagasSpider], hours=1)
+scheduler.add_job(process.crawl, 'interval', args=[ExtractorIndeedSpider], minutes=1)
 
 scheduler.start()
 process.start(False)
