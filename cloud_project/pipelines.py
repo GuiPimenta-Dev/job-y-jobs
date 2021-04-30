@@ -18,8 +18,8 @@ class CloudProjectPipeline:
             f"mongodb+srv://{os.environ['USER']}:{os.environ['PASS']}@backend.lwkqa.mongodb.net/{os.environ['DB']}?retryWrites={os.environ['RETRY']}&w=majority")
 
         # VARIAVEIS .ENV
-        self.conn = pymongo.MongoClient(
-            f"mongodb+srv://{USER}:{PASS}@backend.lwkqa.mongodb.net/{DB}?retryWrites={RETRY}&w=majority")
+        # self.conn = pymongo.MongoClient(
+        #     f"mongodb+srv://{USER}:{PASS}@backend.lwkqa.mongodb.net/{DB}?retryWrites={RETRY}&w=majority")
 
         db = self.conn.jobs
 
