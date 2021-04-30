@@ -8,7 +8,7 @@
 import os
 
 import pymongo
-from env import USER,PASS,DB,RETRY,COLLECTION
+# from env import USER,PASS,DB,RETRY,COLLECTION
 
 class CloudProjectPipeline:
 
