@@ -8,9 +8,9 @@ class ExtractorIndeedSpider(scrapy.Spider):
     name = 'spider_jobs_indeed'
     start_urls = []
     item = JobsVagasItem()
-    # job = ["Python", "Java", "C#", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
+    job = ["Python", "Java", "C#", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
 
-    job = ["Python"]
+    # job = ["Python"]
 
     API_KEY = "a20237a96125fe9ca30c6760ddb040d5"
 
