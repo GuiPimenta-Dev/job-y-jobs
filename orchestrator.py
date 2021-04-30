@@ -31,7 +31,6 @@ process.start(False)
 
 
 
-
 # import threading
 # from scrapy.crawler import CrawlerRunner
 # import schedule
