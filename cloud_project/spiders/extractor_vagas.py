@@ -1,15 +1,17 @@
 import scrapy
 
 from cloud_project.items.items import JobsVagasItem
+from ..constants.constants import SpidersNames
 
 
-class ExtractorVagasSpider(scrapy.Spider):
-    name = 'spider_jobs_vagas'
+class VagasSpider(scrapy.Spider):
+    name = SpidersNames.VAGAS
     start_urls = []
+    data = {}
     item = JobsVagasItem()
-    job = ["Python", "Java", "C#", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
+    # job = ["Python", "Java", "C", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
 
-    # job = ["Python"]
+    job = ["Flutter","RPA"]
 
     def __init__(self, *args, **kwargs):
 
@@ -20,8 +22,10 @@ class ExtractorVagasSpider(scrapy.Spider):
             start_urls = [f'https://www.vagas.com.br/vagas-de-{job}?pagina={i}' for i in range(1, 10)]
             for start_url in start_urls:
                 self.start_urls.append(start_url)
+                self.data[job] = 0
+
         self.logger.info(self.start_urls)
-        super(ExtractorVagasSpider, self).__init__(*args, **kwargs)
+        super(VagasSpider, self).__init__(*args, **kwargs)
 
     def parse(self, response, **kwargs):
         for i in response.xpath('//li[contains(@class, "vaga odd ") or contains(@class, "vaga even ")]'):
@@ -57,4 +61,11 @@ class ExtractorVagasSpider(scrapy.Spider):
 
             # self.item['timestamp'] = datetime.now().strftime("%H:%M:%S %d/%m/%Y ")
 
+            # self.parse_summary(response.url)
+
+            self.item['url'] = response.url
+
             yield self.item
+
+
+

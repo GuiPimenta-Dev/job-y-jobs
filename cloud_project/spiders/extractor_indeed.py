@@ -2,10 +2,10 @@ import scrapy
 
 from cloud_project.items.items import JobsVagasItem
 from scrapy.selector import Selector
+from ..constants.constants import SpidersNames
 
-
-class ExtractorIndeedSpider(scrapy.Spider):
-    name = 'spider_jobs_indeed'
+class IndeedSpider(scrapy.Spider):
+    name = SpidersNames.INDEED
     start_urls = []
     item = JobsVagasItem()
     job = ["Python", "Java", "C#", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
@@ -17,11 +17,12 @@ class ExtractorIndeedSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
 
         for job in self.job:
-            start_urls = [f'http://api.scraperapi.com/?api_key={self.API_KEY}&url=https://br.indeed.com/empregos?q={job}&start={i}' for i in range(0, 100, 10)]
+            # start_urls = [f'http://api.scraperapi.com/?api_key={self.API_KEY}&url=https://br.indeed.com/empregos?q={job}&start={i}' for i in range(0, 30, 10)]
+            start_urls = [f'https://br.indeed.com/empregos?q={job}&start={i}' for i in range(0, 100, 10)]
             for start_url in start_urls:
                 self.start_urls.append(start_url)
         self.logger.info(self.start_urls)
-        super(ExtractorIndeedSpider, self).__init__(*args, **kwargs)
+        super(IndeedSpider, self).__init__(*args, **kwargs)
 
     def parse(self, response, **kwargs):
         ids = response.xpath(

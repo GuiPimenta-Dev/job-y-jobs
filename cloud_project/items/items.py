@@ -4,6 +4,7 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from scrapyd_client.commands import schedule
 
 
 class LoginVagasItem(scrapy.Item):
@@ -18,5 +19,6 @@ class JobsVagasItem(scrapy.Item):
     description = scrapy.Field()
     local = scrapy.Field()
     date = scrapy.Field()
-    available = scrapy.Field()
+    url = scrapy.Field()
+    filter = scrapy.Field()
     timestamp = scrapy.Field()

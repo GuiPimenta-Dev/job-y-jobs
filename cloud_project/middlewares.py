@@ -2,8 +2,11 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from datetime import datetime
 
+import pymongo
 from scrapy import signals
+from env import USER,PASS,DB,RETRY,COLLECTION
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
@@ -14,11 +17,27 @@ class CloudProjectSpiderMiddleware:
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
 
+    def __init__(self):
+
+        # VARIAVEIS AMBIENTE DO HEROKU
+        # self.conn = pymongo.MongoClient(
+        #     f"mongodb+srv://{os.environ['USER']}:{os.environ['PASS']}@backend.lwkqa.mongodb.net/{os.environ['DB']}?retryWrites={os.environ['RETRY']}&w=majority")
+
+        # VARIAVEIS .ENV
+        self.conn = pymongo.MongoClient(
+            f"mongodb+srv://{USER}:{PASS}@backend.lwkqa.mongodb.net/{DB}?retryWrites={RETRY}&w=majority")
+
+        db = self.conn.jobs
+
+        # self.collection = db[os.environ['COLLECTION']]
+        self.collection_summary = db["summary_tb"]
+
     @classmethod
     def from_crawler(cls, crawler):
         # This method is used by Scrapy to create your spiders.
         s = cls()
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
+        crawler.signals.connect(s.spider_closed, signal=signals.spider_closed)
         return s
 
     def process_spider_input(self, response, spider):
@@ -54,6 +73,12 @@ class CloudProjectSpiderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+    def spider_closed(self, spider):
+        summary = {}
+        summary['data'] = spider.data
+        summary['timestamp'] = datetime.now().strftime("%H:%M:%S %d/%m/%Y ")
+        self.collection_summary.insert(summary)
 
 
 class CloudProjectDownloaderMiddleware:
