@@ -6,7 +6,7 @@ from datetime import datetime
 
 import pymongo
 from scrapy import signals
-from env import USER,PASS,DB,RETRY,COLLECTION
+# from env import USER,PASS,DB,RETRY,COLLECTION
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
