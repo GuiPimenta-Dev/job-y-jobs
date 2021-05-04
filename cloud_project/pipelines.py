@@ -31,8 +31,6 @@ class CloudProjectPipeline:
 
     def process_item(self, item, spider):
 
-        # self.parse_summary(spider.job,spider.url)
-
         if not self.collection_jobs_tb.find_one({"link": item['link']}):
             self.collection_jobs_tb.insert(dict(item))
 

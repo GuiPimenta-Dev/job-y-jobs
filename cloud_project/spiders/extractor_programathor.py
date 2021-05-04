@@ -14,7 +14,7 @@ class ProgramathorSpider(scrapy.Spider):
     start_urls = []
     data = {}
     item = JobsVagasItem()
-    job = ["python", "java", "c#", "javascript", "oracle", "rpa", "flutter", "designer"]
+    job = ["python", "java", "c", "javascript", "oracle", "rpa", "flutter", "designer"]
 
     # job = ["Python"]
 
