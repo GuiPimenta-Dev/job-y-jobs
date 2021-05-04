@@ -4,8 +4,6 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from scrapyd_client.commands import schedule
-
 
 class LoginVagasItem(scrapy.Item):
     status = scrapy.Field()
