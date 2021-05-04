@@ -5,4 +5,4 @@ scrapy-user-agents
 datetime
 scrapy-selenium
 apscheduler
-scrapy_proxy_pool
+requests

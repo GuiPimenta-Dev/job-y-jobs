@@ -1,11 +1,10 @@
 from datetime import datetime
 
 import scrapy
-from scrapy.http.request import Request
-from scrapy.http import Response
-from inline_requests import inline_requests
+import requests
 
 from cloud_project.items.items import JobsVagasItem
+from scrapy.http import HtmlResponse
 
 from ..constants.constants import SpidersNames
 
@@ -14,6 +13,7 @@ class ProgramathorSpider(scrapy.Spider):
     name = SpidersNames.PROGRAMATHOR
     start_urls = []
     data = {}
+    item = JobsVagasItem()
     job = ["python", "java", "c#", "javascript", "oracle", "rpa", "flutter", "designer"]
 
     # job = ["Python"]
@@ -29,60 +29,58 @@ class ProgramathorSpider(scrapy.Spider):
         self.logger.info(self.start_urls)
         super(ProgramathorSpider, self).__init__(*args, **kwargs)
 
-
     def parse(self, response, **kwargs):
-        item = JobsVagasItem()
-        divs = response.xpath('//div[@class="cell-list "]')
+        try:
+            job = response.xpath('//h3/text()').getall()
+            link = response.xpath('//div[@class="cell-list "]//a/@href').getall()
+            employer = response.xpath('//div[@class="cell-list-content-icon"]//span[1]/text()').getall()
+            local = response.xpath('//div[@class="cell-list-content-icon"]//span[2]/text()').getall()
+            date = datetime.now().strftime("%d/%m/%Y")
 
-        job = response.xpath('//h3/text()').getall()
-        link = response.xpath('//div[@class="cell-list "]//a/@href').getall()
-        employer = response.xpath('//div[@class="cell-list-content-icon"]//span[1]/text()').getall()
-        local = response.xpath('//div[@class="cell-list-content-icon"]//span[2]/text()').getall()
-        date = datetime.now().strftime("%d/%m/%Y")
+            for i in range(len(job)):
 
-        for i in range(len(link)):
-            # job = i.xpath('//h3/text()').get()
-            # link = 'https://programathor.com.br' + i.xpath('//div[@class="cell-list "]//a/@href').get()
-            # employer = i.xpath('//div[@class="cell-list-content-icon"]//span[1]/text()').get()
-            # local = i.xpath('//div[@class="cell-list-content-icon"]//span[2]/text()').get()
-            # date = datetime.now().strftime("%d/%m/%Y")
+                self.item['site'] = SpidersNames.PROGRAMATHOR.capitalize()
 
-            item['site'] = SpidersNames.PROGRAMATHOR.capitalize()
+                try:
+                    self.item['job'] = job[i]
+                except:
+                    self.item['job'] = ''
 
-            try:
-                item['job'] = job[i]
-            except:
-                item['job'] = ''
+                try:
+                    self.item['link'] = 'https://programathor.com.br' + link[i]
+                except:
+                    self.item['link'] = ''
 
-            try:
-                item['link'] =  'https://programathor.com.br'+ link[i]
-            except:
-                item['link'] = ''
+                try:
+                    self.item['employer'] = employer[i]
+                except:
+                    self.item['employer'] = ''
 
-            try:
-                item['employer'] = employer[i]
-            except:
-                item['employer'] = ''
+                try:
+                    self.item['local'] = local[i]
+                except:
+                    self.item['local'] = ''
 
-            try:
-                item['local'] = local[i]
-            except:
-                item['local'] = ''
+                self.item['date'] = date
 
-            item['date'] = date
+                self.item['url'] = response.url
 
-            item['url'] = response.url
+                for filter in self.job:
+                    if "-" + filter + "?" in self.item['url']:
+                        self.item['filter'] = filter
 
-            for job in self.job:
-                if "-" + job + "?" in item['url']:
-                    item['filter'] = job
+                url = 'https://programathor.com.br' + link[i]
 
-            # yield item
-            url = 'https://programathor.com.br'+ link[i]
-            yield scrapy.Request(url='https://programathor.com.br'+ link[i], callback=self.parse_description,meta={"item": item})
+                res = HtmlResponse(url=url, body=requests.get(url).text, encoding='utf-8')
 
-    #
-    def parse_description(self, response: Response):
+                self.parse_description(res)
+
+                yield self.item
+
+        except IndexError:
+            pass
+
+    def parse_description(self, response):
         company_description1 = response.xpath('//p[4]/text()').getall()
         company_description2 = response.xpath('//p[5]/text()').getall()
         activities = response.xpath('//p[6]/text()').getall()
@@ -116,7 +114,6 @@ class ProgramathorSpider(scrapy.Spider):
             for i in college:
                 description += i
 
-        item = response.meta['item']
-        item['description'] = description
+        self.item['description'] = description
 
-        return item
+        return self.item
