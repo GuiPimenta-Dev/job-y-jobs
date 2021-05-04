@@ -3,6 +3,7 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 from datetime import datetime
+import os
 
 import pymongo
 from scrapy import signals
