@@ -99,6 +99,8 @@ class IndeedSpider(scrapy.Spider):
             except:
                 self.item['date'] = ''
 
+            self.item['url'] = response.url
+
             filter_list = []
             for filter in self.job:
                 if "-" + filter + "?" in self.item['url']:
