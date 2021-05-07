@@ -13,10 +13,11 @@ class ProgramathorSpider(scrapy.Spider):
     name = SpidersNames.PROGRAMATHOR
     start_urls = []
     data = {}
+    filter = []
     item = JobsVagasItem()
-    job = ["python", "java", "c", "javascript", "oracle", "rpa", "flutter", "designer"]
+    # job = ["python", "java", "c", "javascript", "oracle", "rpa", "flutter", "designer"]
 
-    # job = ["Python"]
+    job = ["flutter"]
 
     def __init__(self, *args, **kwargs):
 
@@ -65,9 +66,11 @@ class ProgramathorSpider(scrapy.Spider):
 
                 self.item['url'] = response.url
 
+                filter_list = []
                 for filter in self.job:
                     if "-" + filter + "?" in self.item['url']:
-                        self.item['filter'] = filter
+                        filter_list.append(filter)
+                        self.item['filter'] = filter_list
 
                 url = 'https://programathor.com.br' + link[i]
 
@@ -76,6 +79,7 @@ class ProgramathorSpider(scrapy.Spider):
                 self.parse_description(res)
 
                 yield self.item
+
 
         except IndexError:
             pass
@@ -116,4 +120,4 @@ class ProgramathorSpider(scrapy.Spider):
 
         self.item['description'] = description
 
-        return self.item
+        # return self.item

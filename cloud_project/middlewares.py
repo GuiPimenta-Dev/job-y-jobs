@@ -7,7 +7,7 @@ import os
 
 import pymongo
 from scrapy import signals
-# from env import USER,PASS,DB,RETRY,COLLECTION
+from env import USER,PASS,DB,RETRY
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
@@ -21,12 +21,12 @@ class CloudProjectSpiderMiddleware:
     def __init__(self):
 
         # VARIAVEIS AMBIENTE DO HEROKU
-        self.conn = pymongo.MongoClient(
-            f"mongodb+srv://{os.environ['USER']}:{os.environ['PASS']}@backend.lwkqa.mongodb.net/{os.environ['DB']}?retryWrites={os.environ['RETRY']}&w=majority")
+        # self.conn = pymongo.MongoClient(
+        #     f"mongodb+srv://{os.environ['USER']}:{os.environ['PASS']}@backend.lwkqa.mongodb.net/{os.environ['DB']}?retryWrites={os.environ['RETRY']}&w=majority")
 
         # VARIAVEIS .ENV
-        # self.conn = pymongo.MongoClient(
-        #     f"mongodb+srv://{USER}:{PASS}@backend.lwkqa.mongodb.net/{DB}?retryWrites={RETRY}&w=majority")
+        self.conn = pymongo.MongoClient(
+            f"mongodb+srv://{USER}:{PASS}@backend.lwkqa.mongodb.net/{DB}?retryWrites={RETRY}&w=majority")
 
         db = self.conn.jobs
 
@@ -76,10 +76,13 @@ class CloudProjectSpiderMiddleware:
         spider.logger.info('Spider opened: %s' % spider.name)
 
     def spider_closed(self, spider):
-        summary = {}
-        summary['data'] = spider.data
-        summary['timestamp'] = datetime.now().strftime("%H:%M:%S %d/%m/%Y ")
-        self.collection_summary.insert(summary)
+        for key, value in self.collection_summary.find_one()['data'].items():
+            if key in spider.data:
+                spider.data[key] += value
+                self.collection_summary.update({"id": "1"}, {"$set": {f"data.{key}": spider.data[key]}})
+
+        self.collection_summary.update({"id": "1"}, {"$set": {"timestamp": datetime.now().strftime("%H:%M:%S %d/%m/%Y")}})
+
 
 
 class CloudProjectDownloaderMiddleware:

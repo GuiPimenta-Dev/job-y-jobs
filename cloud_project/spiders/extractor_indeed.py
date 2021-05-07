@@ -8,9 +8,9 @@ class IndeedSpider(scrapy.Spider):
     name = SpidersNames.INDEED
     start_urls = []
     item = JobsVagasItem()
-    job = ["Python", "Java", "C#", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
+    job = ["python", "java", "c", "javascript", "oracle", "rpa", "flutter", "designer"]
 
-    # job = ["Python"]
+    # job = ["rpa"]
 
     API_KEY = "a20237a96125fe9ca30c6760ddb040d5"
 
@@ -98,5 +98,11 @@ class IndeedSpider(scrapy.Spider):
                 self.item['date'] = date
             except:
                 self.item['date'] = ''
+
+            filter_list = []
+            for filter in self.job:
+                if "-" + filter + "?" in self.item['url']:
+                    filter_list.append(filter)
+                    self.item['filter'] = filter_list
 
             yield self.item

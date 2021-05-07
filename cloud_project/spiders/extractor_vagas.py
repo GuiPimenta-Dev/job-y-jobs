@@ -9,9 +9,9 @@ class VagasSpider(scrapy.Spider):
     start_urls = []
     data = {}
     item = JobsVagasItem()
-    # job = ["Python", "Java", "C", "JavaScript", "Oracle", "RPA", "Flutter", "Designer"]
+    # job = ["python", "java", "c", "javascript", "oracle", "rpa", "flutter", "designer"]
 
-    job = ["Flutter","RPA"]
+    job = ["flutter","rpa"]
 
     def __init__(self, *args, **kwargs):
 
@@ -59,13 +59,17 @@ class VagasSpider(scrapy.Spider):
             except:
                 self.item['date'] = ''
 
-            # self.item['timestamp'] = datetime.now().strftime("%H:%M:%S %d/%m/%Y ")
-
-            # self.parse_summary(response.url)
+            filter_list = []
+            for filter in self.job:
+                if "-" + filter + "?" in self.item['url']:
+                    filter_list.append(filter)
+                    self.item['filter'] = filter_list
 
             self.item['url'] = response.url
 
             yield self.item
+
+
 
 
 
