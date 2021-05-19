@@ -103,7 +103,7 @@ class IndeedSpider(scrapy.Spider):
 
             filter_list = []
             for filter in self.job:
-                if "-" + filter + "?" in self.item['url']:
+                if "=" + filter + "&" in self.item['url']:
                     filter_list.append(filter)
                     self.item['filter'] = filter_list
 

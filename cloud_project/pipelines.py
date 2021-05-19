@@ -7,27 +7,28 @@
 # useful for handling different item types with a single interface
 import os
 from cloud_project.constants.constants import SpidersNames
+from datetime import datetime
 
 import pymongo
-# from env import USER, PASS, DB, RETRY, COLLECTION
+from env import USER, PASS, DB, RETRY, COLLECTION
 
 
 class CloudProjectPipeline:
 
     def __init__(self):
         # VARIAVEIS AMBIENTE DO HEROKU
-        self.conn = pymongo.MongoClient(
-            f"mongodb+srv://{os.environ['USER']}:{os.environ['PASS']}@backend.lwkqa.mongodb.net/{os.environ['DB']}?retryWrites={os.environ['RETRY']}&w=majority")
+        # self.conn = pymongo.MongoClient(
+        #     f"mongodb+srv://{os.environ['USER']}:{os.environ['PASS']}@backend.lwkqa.mongodb.net/{os.environ['DB']}?retryWrites={os.environ['RETRY']}&w=majority")
 
         # VARIAVEIS .ENV
-        # self.conn = pymongo.MongoClient(
-        #     f"mongodb+srv://{USER}:{PASS}@backend.lwkqa.mongodb.net/{DB}?retryWrites={RETRY}&w=majority")
+        self.conn = pymongo.MongoClient(
+            f"mongodb+srv://{USER}:{PASS}@backend.lwkqa.mongodb.net/{DB}?retryWrites={RETRY}&w=majority")
 
         db = self.conn.jobs
 
-        self.collection_jobs_tb = db[os.environ['COLLECTION']]
-        # self.collection_jobs_tb = db[COLLECTION]
-        # self.collection_summary = db["summary"]
+        # self.collection_jobs_tb = db[os.environ['COLLECTION']]
+        self.collection_jobs_tb = db[COLLECTION]
+        # self.collection_summary = db["summary_tb"]
 
     def process_item(self, item, spider):
 
@@ -43,5 +44,6 @@ class CloudProjectPipeline:
                 for job in spider.job:
                     if "-" + job + "?" in item['url']:
                         spider.data[job] += 1
+
 
         return item

@@ -17,7 +17,7 @@ class ProgramathorSpider(scrapy.Spider):
     item = JobsVagasItem()
     job = ["python", "java", "c", "javascript", "oracle", "rpa", "flutter", "designer"]
 
-    # job = ["flutter"]
+    # job = ["flutter","rpa"]
 
     def __init__(self, *args, **kwargs):
 
