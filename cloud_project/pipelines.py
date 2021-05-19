@@ -26,7 +26,6 @@ class CloudProjectPipeline:
 
         db = self.conn.jobs
 
-
         # self.collection_jobs_tb = db[os.environ['COLLECTION']]
         self.collection_jobs_tb = db[COLLECTION]
         # self.collection_summary = db["summary_tb"]
